@@ -1,0 +1,46 @@
+version: "3"
+services:
+
+  api-gateway:
+    build: ./api-gateway-pattern/
+    restart: always
+    container_name: api-gateway-docker
+    depends_on:
+      - track
+    ports:
+      - 8081:8081
+
+  config:
+    build: ./config-server/
+    restart: always
+    container_name: config-docker
+    ports:
+      - 8800:8800
+
+  eureka:
+    build: ./eureka-server/
+    restart: always
+    container_name: eureka-docker
+    ports:
+      - 7770:7770
+    depends_on:
+      - track
+
+  track:
+    build: ./track-service/
+    restart: always
+    container_name: track-docker
+    ports:
+      - 8086:8086
+    depends_on:
+      - config
+
+  user:
+    build: ./user-service/
+    restart: always
+    container_name: user-docker
+    ports:
+      - 8080:8080
+
+
+
